@@ -27,41 +27,32 @@ module Datarx(
     input wire reset,
     output wire [7:0] data_out
 ); 
-    reg [7:0] data_reg;
-    reg [7:0] data_out_reg;
     reg [2:0] count;
-    reg done_flag;
+    reg [7:0]data_reg;
+    reg [7:0] data_out_reg;
 
     always @(posedge clk_400MHz or posedge reset) begin
-        if (reset)
-            data_reg <= 8'b0;
-        else begin
-            if (count <= 7) begin
-                data_reg[count] <= data_in;
+        if (reset) begin
+            count <= 7;
+        end else begin
+            if (count == 0) begin
+                count <= 7;
+            end else begin
+                count <= count - 1;
             end
         end
     end
-    
+
     always @(posedge clk_400MHz or posedge reset) begin
         if (reset) begin
-            count <= 3'b111;
-            done_flag <= 1'b0;
-        end
-        else begin
-            if (count == 3'b0) begin
-                count <= 3'b111;
-                done_flag <= 1'b1;
+            data_reg <= 8'b0;
+        end else begin
+            if (count > 0) begin
+                data_reg[count] <= data_in;
             end
-            else begin
-                count <= count - 3'b1;
-            end
+            else
+                data_out_reg <= {data_reg[7:1],data_in};
         end
-    end
-    always @(posedge clk_50MHz or posedge reset) begin
-        if (reset)
-            data_out_reg <= 8'b0;
-        else if (done_flag)
-            data_out_reg <= data_reg;
     end
     assign data_out = data_out_reg;
 endmodule
