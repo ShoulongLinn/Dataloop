@@ -1,8 +1,14 @@
-Dataloop test @Vivado
+# Dataloop test @ Vivado
 
+## quick start
+* clone this repo
+* open vivado tcl shell
+* cd repo path
+* source ./tcl/dataloop_prjgen.tcl
+* run simulation
 
-block view
+## module overview
+* |Datasource|  ----- |Datatx|-----|Datarx|
 
-|Datasource|  ----- |Datatx|-----|Datarx|
-
-generate 8bit data @50MHz,    tx 1bit data @400MHz,  rx 1bit data @400MHz and recover the data.
+## function describe
+* generate 8bit data @50MHz, send 1bit data @400MHz,recieve 1bit data @400MHz and recover the data.
